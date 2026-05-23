@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getScores, mergeScores } from "@/lib/kv";
 
 export async function GET() {
