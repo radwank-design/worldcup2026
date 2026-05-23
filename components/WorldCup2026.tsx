@@ -40,24 +40,24 @@ function calcStandings(teams: readonly string[], results: GroupMatch[]) {
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-.wc{min-height:100vh;background:#07090f;color:#e2e8f0;font-family:'Outfit',sans-serif;background-image:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(234,179,8,.07) 0%,transparent 70%)}
+.wc{min-height:100vh;background:#060D1A;color:#e2e8f0;font-family:'Outfit',sans-serif;background-image:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(37,99,235,.08) 0%,transparent 70%)}
 .hdr{padding:18px 22px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
 .hdr-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
-.htitle{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,5vw,40px);letter-spacing:3px;color:#fbbf24;line-height:1}
+.htitle{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,5vw,40px);letter-spacing:3px;color:#2563EB;line-height:1}
 .hsub{font-size:11px;color:#475569;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
 .cdown{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.cdbox{background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.18);border-radius:8px;padding:8px 13px;text-align:center;min-width:58px}
-.cdnum{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#fbbf24;line-height:1}
+.cdbox{background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.25);border-radius:8px;padding:8px 13px;text-align:center;min-width:58px}
+.cdnum{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#2563EB;line-height:1}
 .cdlbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:1px}
-.cdsep{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#1e293b;padding-bottom:10px}
-.tz-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:5px;padding:2px 8px;font-size:10px;color:#fbbf24;font-weight:600;margin-left:6px;align-self:center}
+.cdsep{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#0D1E3A;padding-bottom:10px}
+.tz-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:5px;padding:2px 8px;font-size:10px;color:#2563EB;font-weight:600;margin-left:6px;align-self:center}
 .tabs{display:flex;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.06);overflow-x:auto}
 .tbtn{padding:11px 17px;font-size:10.5px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;border:none;background:none;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-family:'Outfit',sans-serif;white-space:nowrap}
-.tbtn:hover{color:#94a3b8}.tbtn.on{color:#fbbf24;border-bottom-color:#fbbf24}
+.tbtn:hover{color:#94a3b8}.tbtn.on{color:#2563EB;border-bottom-color:#2563EB}
 .body{padding:18px 22px;max-width:1100px}
 .sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:22px}
 .scard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center}
-.snum{font-family:'Bebas Neue',sans-serif;font-size:38px;color:#fbbf24;line-height:1}
+.snum{font-family:'Bebas Neue',sans-serif;font-size:38px;color:#2563EB;line-height:1}
 .slbl{font-size:9.5px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 .sec{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#64748b;margin:0 0 9px}
 .tl{display:flex;flex-direction:column;gap:5px}
@@ -66,10 +66,10 @@ const CSS = `
 .gl{display:grid;grid-template-columns:195px 1fr;gap:16px}
 .glist{display:flex;flex-direction:column;gap:4px}
 .gbtn{display:flex;align-items:flex-start;gap:8px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:8px 10px;cursor:pointer;text-align:left;transition:all .15s;width:100%}
-.gbtn:hover{background:rgba(255,255,255,.045)}.gbtn.on{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.28)}
-.gltr{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#fbbf24;line-height:1;min-width:13px}
+.gbtn:hover{background:rgba(255,255,255,.045)}.gbtn.on{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.35)}
+.gltr{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#2563EB;line-height:1;min-width:13px}
 .gtmini{font-size:9.5px;color:#64748b;line-height:1.65}
-.ghead{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#fbbf24;margin-bottom:11px}
+.ghead{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#2563EB;margin-bottom:11px}
 .stbl{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px}
 .stbl th{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:#475569;padding:5px 7px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06)}
 .stbl th:first-child{text-align:left}
@@ -87,15 +87,15 @@ const CSS = `
 .mrow-meta .mtime{color:#94a3b8}
 .mteam{display:flex;align-items:center;gap:4px;font-size:12px;flex:1}
 .mteam.away{justify-content:flex-end}
-.msc{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#fbbf24;min-width:46px;text-align:center;cursor:pointer;padding:2px 4px;border-radius:4px;transition:background .15s}
-.msc:hover{background:rgba(251,191,36,.1)}.msc.pend{color:#334155;font-size:10.5px;font-family:'Outfit',sans-serif;font-weight:500}
+.msc{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#2563EB;min-width:46px;text-align:center;cursor:pointer;padding:2px 4px;border-radius:4px;transition:background .15s}
+.msc:hover{background:rgba(37,99,235,.12)}.msc.pend{color:#334155;font-size:10.5px;font-family:'Outfit',sans-serif;font-weight:500}
 .stg-filt{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
 .sfbtn{padding:5px 10px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#64748b;cursor:pointer;font-family:'Outfit',sans-serif;font-size:10.5px;font-weight:500;transition:all .15s}
-.sfbtn:hover{background:rgba(255,255,255,.06)}.sfbtn.on{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:#fbbf24}
+.sfbtn:hover{background:rgba(255,255,255,.06)}.sfbtn.on{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.4);color:#2563EB}
 .sched-day{margin-bottom:18px}
-.sday-hdr{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:#64748b;padding:6px 11px;background:rgba(255,255,255,.025);border-radius:6px;margin-bottom:7px;border-left:3px solid rgba(251,191,36,.3)}
+.sday-hdr{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:#64748b;padding:6px 11px;background:rgba(255,255,255,.025);border-radius:6px;margin-bottom:7px;border-left:3px solid rgba(37,99,235,.5)}
 .srow{display:flex;align-items:stretch;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:7px;margin-bottom:4px;overflow:hidden}
-.srow-grp{font-family:'Bebas Neue',sans-serif;font-size:11px;color:#fbbf24;writing-mode:vertical-rl;padding:5px 6px;background:rgba(251,191,36,.04);border-right:1px solid rgba(255,255,255,.05);min-width:24px;display:flex;align-items:center;justify-content:center}
+.srow-grp{font-family:'Bebas Neue',sans-serif;font-size:11px;color:#2563EB;writing-mode:vertical-rl;padding:5px 6px;background:rgba(37,99,235,.06);border-right:1px solid rgba(255,255,255,.05);min-width:24px;display:flex;align-items:center;justify-content:center}
 .srow-body{flex:1;padding:7px 11px}
 .srow-teams{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;margin-bottom:4px}
 .srow-vs{color:#334155;font-size:10px;font-family:'Bebas Neue',sans-serif}
@@ -106,16 +106,16 @@ const CSS = `
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:5px}
 .ccard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:7px 11px;font-size:11.5px;font-weight:500}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:98}
-.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#0f1623;border:1px solid rgba(251,191,36,.25);border-radius:13px;padding:22px;z-index:99;min-width:270px;box-shadow:0 30px 60px rgba(0,0,0,.9)}
-.mtitle{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:#fbbf24;margin-bottom:3px;text-align:center}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#0A1628;border:1px solid rgba(37,99,235,.4);border-radius:13px;padding:22px;z-index:99;min-width:270px;box-shadow:0 30px 60px rgba(0,0,0,.9)}
+.mtitle{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:#2563EB;margin-bottom:3px;text-align:center}
 .msub{text-align:center;font-size:10.5px;color:#475569;margin-bottom:14px}
 .sinp-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:16px}
-.sinp{width:56px;height:56px;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:26px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#fbbf24;outline:none}
-.sinp:focus{border-color:rgba(251,191,36,.45)}
-.svs{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#1e293b}
+.sinp{width:56px;height:56px;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:26px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#2563EB;outline:none}
+.sinp:focus{border-color:rgba(37,99,235,.7)}
+.svs{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#0D1E3A}
 .mbtns{display:flex;gap:6px}
 .btn{flex:1;padding:9px;border:none;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;font-size:11px;transition:all .15s}
-.btn-p{background:#fbbf24;color:#000}.btn-p:hover{background:#fcd34d}
+.btn-p{background:#2563EB;color:#fff}.btn-p:hover{background:#3B82F6}
 .btn-s{background:rgba(255,255,255,.05);color:#94a3b8}.btn-s:hover{background:rgba(255,255,255,.08)}
 .btn-d{background:rgba(239,68,68,.12);color:#f87171}.btn-d:hover{background:rgba(239,68,68,.22)}
 .note{margin-top:7px;font-size:10px;color:#334155}
@@ -212,8 +212,8 @@ export default function WorldCup2026({ initialScores }: Props) {
     <>
       <style>{CSS}</style>
       <div className="wc">
-        <div style={{textAlign:"center",padding:"7px 16px",background:"rgba(251,191,36,.04)",borderBottom:"1px solid rgba(255,255,255,.05)",fontSize:11,color:"#475569",letterSpacing:.5}}>
-          Generated with <span style={{color:"#fbbf24",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#e2e8f0",fontWeight:500}}>Radwan Khawlie</span>
+        <div style={{textAlign:"center",padding:"7px 16px",background:"rgba(37,99,235,.04)",borderBottom:"1px solid rgba(255,255,255,.05)",fontSize:11,color:"#475569",letterSpacing:.5}}>
+          Generated with <span style={{color:"#2563EB",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#e2e8f0",fontWeight:500}}>Radwan Khawlie</span>
         </div>
 
         <div className="hdr">
@@ -258,10 +258,10 @@ export default function WorldCup2026({ initialScores }: Props) {
                 {name:"Quarterfinals",dt:"Jul 9 – Jul 11",det:"4 matches",c:"#fb923c"},
                 {name:"Semifinals",dt:"Jul 14 – Jul 15",det:"2 matches",c:"#f472b6"},
                 {name:"3rd Place Match",dt:"Jul 18",det:"Hard Rock Stadium, Miami",c:"#94a3b8"},
-                {name:"THE FINAL",dt:"Jul 19",det:"MetLife Stadium, East Rutherford NJ",c:"#fbbf24"},
+                {name:"THE FINAL",dt:"Jul 19",det:"MetLife Stadium, East Rutherford NJ",c:"#2563EB"},
               ].map(s=>(
                 <div key={s.name} className="tlrow" style={{borderLeftColor:s.c}}>
-                  <div className="tlname" style={{color:s.name==="THE FINAL"?"#fbbf24":undefined}}>{s.name}</div>
+                  <div className="tlname" style={{color:s.name==="THE FINAL"?"#2563EB":undefined}}>{s.name}</div>
                   <div className="tldet">{s.det}</div>
                   <div className="tldt">{s.dt}</div>
                 </div>
@@ -270,12 +270,12 @@ export default function WorldCup2026({ initialScores }: Props) {
             <div style={{marginTop:20}}>
               <div className="sec">Key Kickoffs (your local time)</div>
               <div className="tl">
-                <div className="tlrow" style={{borderLeftColor:"#fbbf24"}}>
+                <div className="tlrow" style={{borderLeftColor:"#2563EB"}}>
                   <div className="tlname">Opening Match</div>
                   <div className="tldet">🇲🇽 Mexico vs 🇿🇦 South Africa · Estadio Azteca, Mexico City</div>
                   <div className="tldt">Jun 11 · {formatLocal("2026-06-11T19:00:00Z").timeStr} {tzAbbr}</div>
                 </div>
-                <div className="tlrow" style={{borderLeftColor:"#fbbf24"}}>
+                <div className="tlrow" style={{borderLeftColor:"#2563EB"}}>
                   <div className="tlname">World Cup Final</div>
                   <div className="tldet">MetLife Stadium, East Rutherford, New Jersey</div>
                   <div className="tldt">Jul 19 · {formatLocal("2026-07-19T19:00:00Z").timeStr} {tzAbbr}</div>
@@ -393,8 +393,8 @@ export default function WorldCup2026({ initialScores }: Props) {
                 <div className="cgrid">{cities.map(c=><div key={c} className="ccard">{c}</div>)}</div>
               </div>
             ))}
-            <div style={{marginTop:12,padding:"12px 14px",background:"rgba(251,191,36,.04)",border:"1px solid rgba(251,191,36,.12)",borderRadius:8,fontSize:11,color:"#64748b",lineHeight:1.8}}>
-              <strong style={{color:"#fbbf24"}}>Historic first:</strong> three nations jointly hosting a FIFA World Cup. USA hosts 78 of 104 matches · Mexico and Canada host 13 each.
+            <div style={{marginTop:12,padding:"12px 14px",background:"rgba(37,99,235,.04)",border:"1px solid rgba(37,99,235,.15)",borderRadius:8,fontSize:11,color:"#64748b",lineHeight:1.8}}>
+              <strong style={{color:"#2563EB"}}>Historic first:</strong> three nations jointly hosting a FIFA World Cup. USA hosts 78 of 104 matches · Mexico and Canada host 13 each.
             </div>
           </>}
         </div>
@@ -420,7 +420,7 @@ export default function WorldCup2026({ initialScores }: Props) {
         )}
 
         <div style={{textAlign:"center",padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,.05)",marginTop:8,fontSize:11,color:"#475569",letterSpacing:.5}}>
-          Generated with <span style={{color:"#fbbf24",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#e2e8f0",fontWeight:500}}>Radwan Khawlie</span>
+          Generated with <span style={{color:"#2563EB",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#e2e8f0",fontWeight:500}}>Radwan Khawlie</span>
         </div>
       </div>
     </>
