@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { FLAGS, GROUPS, GROUP_MATCHES, KNOCKOUT_MATCHES, getGroupMatches, GroupMatch } from "@/lib/matches";
+import { FLAGS, GROUPS, GROUP_MATCHES, KNOCKOUT_MATCHES, getGroupMatches, GroupMatch, KnockoutMatch } from "@/lib/matches";
 import type { ScoreMap } from "@/lib/kv";
 
 type ResultsMap = Record<string, GroupMatch[]>;
@@ -201,7 +201,7 @@ export default function WorldCup2026({ initialScores }: Props) {
     ? GROUP_MATCHES
     : KNOCKOUT_MATCHES.filter(m => m.stage === schedStage);
 
-  const byDay = schedMatches.reduce<Record<string, typeof schedMatches>>((acc, m) => {
+  const byDay = (schedMatches as (GroupMatch | KnockoutMatch)[]).reduce<Record<string, (GroupMatch | KnockoutMatch)[]>>((acc, m) => {
     const {dateStr} = formatLocal(m.utc);
     if (!acc[dateStr]) acc[dateStr] = [];
     acc[dateStr].push(m);
