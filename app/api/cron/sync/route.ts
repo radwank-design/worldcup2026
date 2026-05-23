@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getScores, setScores, ScoreMap } from "@/lib/kv";
-import { GM_RAW } from "@/lib/matches";
+import { GROUP_MATCHES } from "@/lib/matches";
 
 // API-Football team name → our canonical name
 const TEAM_MAP: Record<string, string> = {
@@ -113,7 +113,7 @@ export async function GET(req: NextRequest) {
     if (homeScore === null || awayScore === null) continue;
 
     // Find the group for this match
-    const gm = GM_RAW.find(m => m.home === home && m.away === away);
+    const gm = GROUP_MATCHES.find(m => m.home === home && m.away === away);
     if (!gm) continue;
 
     const key = `${gm.g}|${home}|${away}`;
