@@ -62,7 +62,7 @@ export interface KnockoutMatch {
   utc: string;
 }
 
-const GM_RAW: RawMatch[] = [
+export const GM_RAW: RawMatch[] = [
   {g:"A",home:"Mexico",away:"South Africa",date:"2026-06-11",et:"15:00",venue:"Estadio Azteca, Mexico City"},
   {g:"A",home:"South Korea",away:"Czechia",date:"2026-06-11",et:"22:00",venue:"Estadio Akron, Guadalajara"},
   {g:"B",home:"Canada",away:"Bosnia & Herz.",date:"2026-06-12",et:"15:00",venue:"BMO Field, Toronto"},

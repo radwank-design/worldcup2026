@@ -38,88 +38,93 @@ function calcStandings(teams: readonly string[], results: GroupMatch[]) {
 }
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
-.wc{min-height:100vh;background:#060D1A;color:#e2e8f0;font-family:'Outfit',sans-serif;background-image:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(37,99,235,.08) 0%,transparent 70%)}
-.hdr{padding:18px 22px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
-.hdr-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
-.htitle{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,5vw,40px);letter-spacing:3px;color:#2563EB;line-height:1}
-.hsub{font-size:11px;color:#475569;letter-spacing:2px;text-transform:uppercase;margin-top:3px}
-.cdown{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.cdbox{background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.25);border-radius:8px;padding:8px 13px;text-align:center;min-width:58px}
-.cdnum{font-family:'Bebas Neue',sans-serif;font-size:26px;color:#2563EB;line-height:1}
-.cdlbl{font-size:9px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:1px}
-.cdsep{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#0D1E3A;padding-bottom:10px}
-.tz-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.25);border-radius:5px;padding:2px 8px;font-size:10px;color:#2563EB;font-weight:600;margin-left:6px;align-self:center}
-.tabs{display:flex;background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.06);overflow-x:auto}
-.tbtn{padding:11px 17px;font-size:10.5px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;border:none;background:none;color:#64748b;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;font-family:'Outfit',sans-serif;white-space:nowrap}
-.tbtn:hover{color:#94a3b8}.tbtn.on{color:#2563EB;border-bottom-color:#2563EB}
-.body{padding:18px 22px;max-width:1100px}
-.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:22px}
-.scard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:13px;text-align:center}
-.snum{font-family:'Bebas Neue',sans-serif;font-size:38px;color:#2563EB;line-height:1}
-.slbl{font-size:9.5px;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
-.sec{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:#64748b;margin:0 0 9px}
-.tl{display:flex;flex-direction:column;gap:5px}
-.tlrow{display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:9px 12px;border-left-width:3px}
-.tlname{font-weight:600;font-size:12.5px;flex:1}.tldet{flex:2;font-size:10.5px;color:#64748b}.tldt{font-size:10.5px;color:#94a3b8;white-space:nowrap}
-.gl{display:grid;grid-template-columns:195px 1fr;gap:16px}
+:root{--navy:#080E1A;--navy2:#0D1528;--navy3:#111B30;--panel:#FFFFFF;--panel2:#F4F7FC;--red:#C8102E;--redh:#A30E25;--txt:#0D1528;--txtb:#1E2D45;--txtm:#5A6E8A;--txtl:#E2EAF6;--txtd:#8299B8;--bdl:#DDE4F0;--bdd:rgba(255,255,255,.07);--grn:#16A34A}
+.wc{min-height:100vh;background:var(--navy);color:var(--txtl);font-family:'DM Sans',sans-serif;font-size:14px}
+.hdr{background:var(--navy2);padding:16px 24px 14px;border-bottom:3px solid var(--red)}
+.hdr-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.htitle{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,5vw,42px);font-weight:700;letter-spacing:2px;color:#fff;line-height:1;text-transform:uppercase}
+.hsub{font-size:12px;color:var(--txtd);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;font-weight:400}
+.cdown{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cdbox{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 14px;text-align:center;min-width:62px}
+.cdnum{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;color:#fff;line-height:1}
+.cdlbl{font-size:10px;color:var(--txtd);text-transform:uppercase;letter-spacing:1.5px;margin-top:2px}
+.cdsep{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:600;color:rgba(255,255,255,.2);padding-bottom:12px}
+.tz-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(200,16,46,.12);border:1px solid rgba(200,16,46,.3);border-radius:5px;padding:3px 9px;font-size:11px;color:var(--red);font-weight:600;margin-left:4px;align-self:center}
+.tabs{display:flex;background:var(--navy3);border-bottom:1px solid var(--bdd);overflow-x:auto}
+.tbtn{padding:12px 20px;font-size:12px;font-weight:500;letter-spacing:.8px;text-transform:uppercase;border:none;background:none;color:var(--txtd);cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tbtn:hover{color:var(--txtl);background:rgba(255,255,255,.03)}.tbtn.on{color:#fff;border-bottom-color:var(--red)}
+.body{padding:20px 24px;max-width:1100px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:24px}
+.scard{background:var(--panel);border-radius:10px;padding:16px 14px;text-align:center;border:1px solid var(--bdl)}
+.snum{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:700;color:var(--txt);line-height:1}
+.slbl{font-size:11px;color:var(--txtm);text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-weight:500}
+.sec{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--txtd);margin:0 0 10px}
+.tl{display:flex;flex-direction:column;gap:4px}
+.tlrow{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--bdl);border-radius:8px;padding:11px 14px;border-left-width:4px}
+.tlname{font-weight:600;font-size:13px;flex:1;color:var(--txtb)}
+.tldet{flex:2;font-size:12px;color:var(--txtm)}
+.tldt{font-size:12px;color:var(--txtm);white-space:nowrap;font-weight:500}
+.gl{display:grid;grid-template-columns:200px 1fr;gap:16px}
 .glist{display:flex;flex-direction:column;gap:4px}
-.gbtn{display:flex;align-items:flex-start;gap:8px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:7px;padding:8px 10px;cursor:pointer;text-align:left;transition:all .15s;width:100%}
-.gbtn:hover{background:rgba(255,255,255,.045)}.gbtn.on{background:rgba(37,99,235,.08);border-color:rgba(37,99,235,.35)}
-.gltr{font-family:'Bebas Neue',sans-serif;font-size:19px;color:#2563EB;line-height:1;min-width:13px}
-.gtmini{font-size:9.5px;color:#64748b;line-height:1.65}
-.ghead{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:#2563EB;margin-bottom:11px}
-.stbl{width:100%;border-collapse:collapse;margin-bottom:16px;font-size:12px}
-.stbl th{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:#475569;padding:5px 7px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06)}
+.gbtn{display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,.03);border:1px solid var(--bdd);border-radius:8px;padding:9px 12px;cursor:pointer;text-align:left;transition:all .15s;width:100%}
+.gbtn:hover{background:rgba(255,255,255,.06)}.gbtn.on{background:rgba(200,16,46,.1);border-color:rgba(200,16,46,.4)}
+.gltr{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--red);line-height:1;min-width:14px}
+.gtmini{font-size:11px;color:var(--txtd);line-height:1.7}
+.ghead{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;color:var(--txtl);margin-bottom:10px;text-transform:uppercase}
+.stbl{width:100%;border-collapse:collapse;margin-bottom:16px;background:var(--panel);border-radius:10px;overflow:hidden;border:1px solid var(--bdl);font-size:13px}
+.stbl thead tr{background:#F0F4FA;border-bottom:2px solid var(--bdl)}
+.stbl th{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--txtm);padding:8px 10px;text-align:center;font-weight:600}
 .stbl th:first-child{text-align:left}
-.stbl td{padding:7px 7px;text-align:center;border-bottom:1px solid rgba(255,255,255,.04)}
-.stbl td:first-child{text-align:left;font-weight:500}
-.stbl .q td{background:rgba(74,222,128,.04)}.stbl .q td:not(:first-child){color:#4ade80}
-.rnk{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;font-size:9px;font-weight:600;margin-right:5px;background:rgba(255,255,255,.05)}
-.rnk.top{background:rgba(74,222,128,.15);color:#4ade80}
-.mhd{font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:#475569;margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.stbl td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--bdl);color:var(--txtb)}
+.stbl td:first-child{text-align:left;font-weight:600;color:var(--txt)}
+.stbl tr:last-child td{border-bottom:none}
+.stbl .q{background:rgba(22,163,74,.04)}.stbl .q td:not(:first-child){color:var(--grn)}
+.rnk{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:700;margin-right:6px;background:#EEF1F7;color:var(--txtm)}
+.rnk.top{background:rgba(22,163,74,.15);color:var(--grn)}
+.mhd{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--txtd);margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600}
 .mlist{display:flex;flex-direction:column;gap:4px}
-.mrow{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:7px}
-.mrow-main{display:flex;align-items:center;padding:8px 10px;gap:7px}
-.mrow-meta{display:flex;align-items:center;gap:6px;padding:0 10px 7px;font-size:9.5px;color:#475569;flex-wrap:wrap}
-.mrow-meta span{background:rgba(255,255,255,.04);border-radius:4px;padding:2px 6px}
-.mrow-meta .mtime{color:#94a3b8}
-.mteam{display:flex;align-items:center;gap:4px;font-size:12px;flex:1}
+.mrow{background:var(--panel);border:1px solid var(--bdl);border-radius:8px;overflow:hidden}
+.mrow-main{display:flex;align-items:center;padding:10px 14px;gap:10px}
+.mrow-meta{display:flex;align-items:center;gap:6px;padding:6px 14px 8px;font-size:11px;color:var(--txtm);flex-wrap:wrap;background:var(--panel2);border-top:1px solid var(--bdl)}
+.mrow-meta span{background:rgba(0,0,0,.04);border-radius:4px;padding:2px 7px;font-weight:500}
+.mrow-meta .mtime{color:var(--txtm)}
+.mteam{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;flex:1;color:var(--txt)}
 .mteam.away{justify-content:flex-end}
-.msc{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#2563EB;min-width:46px;text-align:center;cursor:pointer;padding:2px 4px;border-radius:4px;transition:background .15s}
-.msc:hover{background:rgba(37,99,235,.12)}.msc.pend{color:#334155;font-size:10.5px;font-family:'Outfit',sans-serif;font-weight:500}
-.stg-filt{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
-.sfbtn{padding:5px 10px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#64748b;cursor:pointer;font-family:'Outfit',sans-serif;font-size:10.5px;font-weight:500;transition:all .15s}
-.sfbtn:hover{background:rgba(255,255,255,.06)}.sfbtn.on{background:rgba(37,99,235,.1);border-color:rgba(37,99,235,.4);color:#2563EB}
-.sched-day{margin-bottom:18px}
-.sday-hdr{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:#64748b;padding:6px 11px;background:rgba(255,255,255,.025);border-radius:6px;margin-bottom:7px;border-left:3px solid rgba(37,99,235,.5)}
-.srow{display:flex;align-items:stretch;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:7px;margin-bottom:4px;overflow:hidden}
-.srow-grp{font-family:'Bebas Neue',sans-serif;font-size:11px;color:#2563EB;writing-mode:vertical-rl;padding:5px 6px;background:rgba(37,99,235,.06);border-right:1px solid rgba(255,255,255,.05);min-width:24px;display:flex;align-items:center;justify-content:center}
-.srow-body{flex:1;padding:7px 11px}
-.srow-teams{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;margin-bottom:4px}
-.srow-vs{color:#334155;font-size:10px;font-family:'Bebas Neue',sans-serif}
-.srow-meta{display:flex;flex-wrap:wrap;gap:5px;font-size:9.5px;color:#64748b}
-.srow-time{background:rgba(255,255,255,.04);border-radius:4px;padding:2px 6px;color:#94a3b8}
-.ctry{margin-bottom:18px}
-.ctitle{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:5px}
-.ccard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:6px;padding:7px 11px;font-size:11.5px;font-weight:500}
+.msc{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--red);min-width:52px;text-align:center;cursor:pointer;padding:3px 6px;border-radius:6px;transition:background .15s;background:rgba(200,16,46,.06)}
+.msc:hover{background:rgba(200,16,46,.14)}.msc.pend{color:var(--txtm);font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;background:rgba(0,0,0,.04)}
+.stg-filt{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.sfbtn{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--txtd);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;transition:all .15s}
+.sfbtn:hover{background:rgba(255,255,255,.08)}.sfbtn.on{background:rgba(200,16,46,.15);border-color:rgba(200,16,46,.5);color:#FF6B6B}
+.sched-day{margin-bottom:20px}
+.sday-hdr{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--txtd);padding:7px 12px;background:rgba(255,255,255,.035);border-radius:6px;margin-bottom:8px;border-left:3px solid var(--red)}
+.srow{display:flex;align-items:stretch;background:var(--panel);border:1px solid var(--bdl);border-radius:8px;margin-bottom:5px;overflow:hidden}
+.srow-grp{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--red);writing-mode:vertical-rl;padding:5px 7px;background:rgba(200,16,46,.06);border-right:1px solid rgba(200,16,46,.15);min-width:26px;display:flex;align-items:center;justify-content:center;letter-spacing:1px}
+.srow-body{flex:1;padding:9px 14px}
+.srow-teams{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--txt);margin-bottom:5px}
+.srow-vs{color:var(--txtm);font-size:11px;font-weight:400}
+.srow-meta{display:flex;flex-wrap:wrap;gap:5px;font-size:11px;color:var(--txtm)}
+.srow-time{background:rgba(0,0,0,.05);border-radius:4px;padding:2px 7px;font-weight:500;color:var(--txtm)}
+.ctry{margin-bottom:20px}
+.ctitle{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:1.5px;margin-bottom:10px;display:flex;align-items:center;gap:8px;color:var(--txtl);text-transform:uppercase}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:5px}
+.ccard{background:var(--panel);border:1px solid var(--bdl);border-radius:8px;padding:9px 12px;font-size:12px;font-weight:500;color:var(--txtb)}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:98}
-.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#0A1628;border:1px solid rgba(37,99,235,.4);border-radius:13px;padding:22px;z-index:99;min-width:270px;box-shadow:0 30px 60px rgba(0,0,0,.9)}
-.mtitle{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:2px;color:#2563EB;margin-bottom:3px;text-align:center}
-.msub{text-align:center;font-size:10.5px;color:#475569;margin-bottom:14px}
-.sinp-row{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:16px}
-.sinp{width:56px;height:56px;text-align:center;font-family:'Bebas Neue',sans-serif;font-size:26px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:7px;color:#2563EB;outline:none}
-.sinp:focus{border-color:rgba(37,99,235,.7)}
-.svs{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#0D1E3A}
-.mbtns{display:flex;gap:6px}
-.btn{flex:1;padding:9px;border:none;border-radius:7px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;font-size:11px;transition:all .15s}
-.btn-p{background:#2563EB;color:#fff}.btn-p:hover{background:#3B82F6}
-.btn-s{background:rgba(255,255,255,.05);color:#94a3b8}.btn-s:hover{background:rgba(255,255,255,.08)}
-.btn-d{background:rgba(239,68,68,.12);color:#f87171}.btn-d:hover{background:rgba(239,68,68,.22)}
-.note{margin-top:7px;font-size:10px;color:#334155}
-@media(max-width:640px){.gl{grid-template-columns:1fr}.glist{display:grid;grid-template-columns:repeat(4,1fr)}.body{padding:13px}}
+.modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:1px solid var(--bdl);border-radius:14px;padding:24px;z-index:99;min-width:280px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.mtitle{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:2px;color:var(--red);margin-bottom:4px;text-align:center;text-transform:uppercase}
+.msub{text-align:center;font-size:13px;color:var(--txtm);margin-bottom:16px;font-weight:500}
+.sinp-row{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:18px}
+.sinp{width:60px;height:60px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;background:var(--panel2);border:2px solid var(--bdl);border-radius:8px;color:var(--txt);outline:none}
+.sinp:focus{border-color:var(--red)}
+.svs{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--txtm)}
+.mbtns{display:flex;gap:8px}
+.btn{flex:1;padding:10px;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:12px;transition:all .15s}
+.btn-p{background:var(--red);color:#fff}.btn-p:hover{background:var(--redh)}
+.btn-s{background:var(--panel2);color:var(--txtm);border:1px solid var(--bdl)}.btn-s:hover{background:#EEF1F7}
+.btn-d{background:rgba(239,68,68,.1);color:#DC2626;border:1px solid rgba(239,68,68,.2)}.btn-d:hover{background:rgba(239,68,68,.18)}
+.note{margin-top:8px;font-size:11px;color:var(--txtd)}
+@media(max-width:640px){.gl{grid-template-columns:1fr}.glist{display:grid;grid-template-columns:repeat(4,1fr)}.body{padding:14px}.hdr{padding:14px 16px}}
 `;
 
 interface Props { initialScores: ScoreMap }
@@ -212,8 +217,8 @@ export default function WorldCup2026({ initialScores }: Props) {
     <>
       <style>{CSS}</style>
       <div className="wc">
-        <div style={{textAlign:"center",padding:"7px 16px",background:"rgba(37,99,235,.04)",borderBottom:"1px solid rgba(255,255,255,.05)",fontSize:11,color:"#475569",letterSpacing:.5}}>
-          Generated with <span style={{color:"#2563EB",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#e2e8f0",fontWeight:500}}>Radwan Khawlie</span>
+        <div style={{textAlign:"center",padding:"7px 16px",background:"rgba(200,16,46,.06)",borderBottom:"1px solid rgba(200,16,46,.15)",fontSize:11,color:"#8299B8",letterSpacing:.5}}>
+          Generated with <span style={{color:"#C8102E",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#E2EAF6",fontWeight:500}}>Radwan Khawlie</span>
         </div>
 
         <div className="hdr">
@@ -261,7 +266,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                 {name:"THE FINAL",dt:"Jul 19",det:"MetLife Stadium, East Rutherford NJ",c:"#2563EB"},
               ].map(s=>(
                 <div key={s.name} className="tlrow" style={{borderLeftColor:s.c}}>
-                  <div className="tlname" style={{color:s.name==="THE FINAL"?"#2563EB":undefined}}>{s.name}</div>
+                  <div className="tlname" style={{color:s.name==="THE FINAL"?"#C8102E":undefined}}>{s.name}</div>
                   <div className="tldet">{s.det}</div>
                   <div className="tldt">{s.dt}</div>
                 </div>
@@ -270,12 +275,12 @@ export default function WorldCup2026({ initialScores }: Props) {
             <div style={{marginTop:20}}>
               <div className="sec">Key Kickoffs (your local time)</div>
               <div className="tl">
-                <div className="tlrow" style={{borderLeftColor:"#2563EB"}}>
+                <div className="tlrow" style={{borderLeftColor:"#C8102E"}}>
                   <div className="tlname">Opening Match</div>
                   <div className="tldet">🇲🇽 Mexico vs 🇿🇦 South Africa · Estadio Azteca, Mexico City</div>
                   <div className="tldt">Jun 11 · {formatLocal("2026-06-11T19:00:00Z").timeStr} {tzAbbr}</div>
                 </div>
-                <div className="tlrow" style={{borderLeftColor:"#2563EB"}}>
+                <div className="tlrow" style={{borderLeftColor:"#C8102E"}}>
                   <div className="tlname">World Cup Final</div>
                   <div className="tldet">MetLife Stadium, East Rutherford, New Jersey</div>
                   <div className="tldt">Jul 19 · {formatLocal("2026-07-19T19:00:00Z").timeStr} {tzAbbr}</div>
@@ -315,7 +320,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                 <div className="mhd">
                   Matches
                   <span className="tz-badge">📍 {tzAbbr}</span>
-                  <span style={{fontWeight:400,color:"#475569",letterSpacing:0,textTransform:"none",fontSize:9.5}}>tap score to edit</span>
+                  <span style={{fontWeight:400,color:"#8299B8",letterSpacing:0,textTransform:"none",fontSize:11}}>tap score to edit</span>
                 </div>
                 <div className="mlist">
                   {curMatches.map((m,i)=>{
@@ -368,7 +373,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                             <span>{FLAGS[m.home]||""} {m.home}</span>
                             <span className="srow-vs">vs</span>
                             <span>{m.away} {FLAGS[m.away]||""}</span>
-                          </> : <span style={{color:"#94a3b8"}}>{m.home}</span>}
+                          </> : <span style={{color:"#5A6E8A"}}>{m.home}</span>}
                         </div>
                         <div className="srow-meta">
                           <span className="srow-time">{timeStr} {tzAbbr}</span>
@@ -389,12 +394,12 @@ export default function WorldCup2026({ initialScores }: Props) {
               {ctry:"🇨🇦 Canada (2 cities)",cities:["Toronto — BMO Field","Vancouver — BC Place"]},
             ].map(({ctry,cities})=>(
               <div key={ctry} className="ctry">
-                <div className="ctitle">{ctry}<span style={{fontSize:10.5,fontFamily:"Outfit",fontWeight:400,color:"#64748b",letterSpacing:0}}>{cities.length} {cities.length===1?"city":"cities"}</span></div>
+                <div className="ctitle">{ctry}<span style={{fontSize:11,fontFamily:"DM Sans",fontWeight:400,color:"#8299B8",letterSpacing:0}}>{cities.length} {cities.length===1?"city":"cities"}</span></div>
                 <div className="cgrid">{cities.map(c=><div key={c} className="ccard">{c}</div>)}</div>
               </div>
             ))}
-            <div style={{marginTop:12,padding:"12px 14px",background:"rgba(37,99,235,.04)",border:"1px solid rgba(37,99,235,.15)",borderRadius:8,fontSize:11,color:"#64748b",lineHeight:1.8}}>
-              <strong style={{color:"#2563EB"}}>Historic first:</strong> three nations jointly hosting a FIFA World Cup. USA hosts 78 of 104 matches · Mexico and Canada host 13 each.
+            <div style={{marginTop:12,padding:"12px 14px",background:"rgba(200,16,46,.05)",border:"1px solid rgba(200,16,46,.2)",borderRadius:8,fontSize:12,color:"#5A6E8A",lineHeight:1.8}}>
+              <strong style={{color:"#C8102E"}}>Historic first:</strong> three nations jointly hosting a FIFA World Cup. USA hosts 78 of 104 matches · Mexico and Canada host 13 each.
             </div>
           </>}
         </div>
@@ -419,8 +424,8 @@ export default function WorldCup2026({ initialScores }: Props) {
           </>
         )}
 
-        <div style={{textAlign:"center",padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,.05)",marginTop:8,fontSize:11,color:"#475569",letterSpacing:.5}}>
-          Generated with <span style={{color:"#2563EB",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#e2e8f0",fontWeight:500}}>Radwan Khawlie</span>
+        <div style={{textAlign:"center",padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,.05)",marginTop:8,fontSize:11,color:"#8299B8",letterSpacing:.5}}>
+          Generated with <span style={{color:"#C8102E",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#E2EAF6",fontWeight:500}}>Radwan Khawlie</span>
         </div>
       </div>
     </>

@@ -39,6 +39,10 @@ npx tsc --noEmit   # TypeScript type check without building
 
 For local dev without KV, `lib/kv.ts` catches errors and returns `{}` — the dashboard renders fine with no persisted scores.
 
+## Design Changes
+
+**Always use the `frontend-design` skill for any UI/visual changes** — invoke it via `/frontend-design` before implementing changes to `components/WorldCup2026.tsx` that affect layout, colours, typography, spacing, or any visual aspect of the dashboard. This ensures design quality and avoids generic-looking output.
+
 ## Key Constraints
 
 - The `@vercel/kv` package is deprecated but functional. The Upstash Redis integration via Vercel Marketplace injects the same `KV_*` env vars, so it's compatible.
