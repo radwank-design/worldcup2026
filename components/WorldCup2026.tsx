@@ -218,7 +218,7 @@ export default function WorldCup2026({ initialScores }: Props) {
       <style>{CSS}</style>
       <div className="wc">
         <div style={{textAlign:"center",padding:"7px 16px",background:"rgba(200,16,46,.06)",borderBottom:"1px solid rgba(200,16,46,.15)",fontSize:11,color:"#8299B8",letterSpacing:.5}}>
-          Generated with <span style={{color:"#C8102E",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#E2EAF6",fontWeight:500}}>Radwan Khawlie</span>
+          Concept by <span style={{color:"#E2EAF6",fontWeight:600}}>Radwan Khawlie</span>
         </div>
 
         <div className="hdr">
@@ -425,7 +425,7 @@ export default function WorldCup2026({ initialScores }: Props) {
         )}
 
         <div style={{textAlign:"center",padding:"12px 16px",borderTop:"1px solid rgba(255,255,255,.05)",marginTop:8,fontSize:11,color:"#8299B8",letterSpacing:.5}}>
-          Generated with <span style={{color:"#C8102E",fontWeight:600}}>Claude</span> &nbsp;|&nbsp; Concept by <span style={{color:"#E2EAF6",fontWeight:500}}>Radwan Khawlie</span>
+          Concept by <span style={{color:"#E2EAF6",fontWeight:600}}>Radwan Khawlie</span>
         </div>
       </div>
     </>
