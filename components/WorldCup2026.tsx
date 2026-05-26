@@ -225,7 +225,7 @@ export default function WorldCup2026({ initialScores }: Props) {
           <div className="hdr-top">
             <span style={{fontSize:26}}>🏆</span>
             <div style={{flex:1}}>
-              <div className="htitle">FIFA WORLD CUP 2026</div>
+              <div className="htitle">WORLD CUP 2026</div>
               <div className="hsub">USA · Canada · Mexico &nbsp;|&nbsp; Jun 11 – Jul 19, 2026</div>
             </div>
           </div>
