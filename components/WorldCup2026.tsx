@@ -20,6 +20,9 @@ function getTzAbbr() {
   } catch { return "Local"; }
 }
 
+const HIGHLIGHT_TEAMS = new Set(["Qatar","Tunisia","Egypt","Saudi Arabia","Iraq","Jordan","Algeria"]);
+const hl = (t: string) => HIGHLIGHT_TEAMS.has(t);
+
 function calcStandings(teams: readonly string[], results: GroupMatch[]) {
   const s: Record<string, {p:number,w:number,d:number,l:number,gf:number,ga:number,pts:number}> =
     Object.fromEntries(teams.map(t => [t, {p:0,w:0,d:0,l:0,gf:0,ga:0,pts:0}]));
@@ -124,6 +127,7 @@ const CSS = `
 .btn-s{background:var(--panel2);color:var(--txtm);border:1px solid var(--bdl)}.btn-s:hover{background:#EEF1F7}
 .btn-d{background:rgba(239,68,68,.1);color:#DC2626;border:1px solid rgba(239,68,68,.2)}.btn-d:hover{background:rgba(239,68,68,.18)}
 .note{margin-top:8px;font-size:11px;color:var(--txtd)}
+.hl-team{color:#E8A020!important;font-weight:700!important}
 @media(max-width:640px){.gl{grid-template-columns:1fr}.glist{display:grid;grid-template-columns:repeat(4,1fr)}.body{padding:14px}.hdr{padding:14px 16px}}
 `;
 
@@ -295,7 +299,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                 {GROUPS.map(g=>(
                   <button key={g.id} className={`gbtn ${sel===g.id?"on":""}`} onClick={()=>setSel(g.id)}>
                     <span className="gltr">{g.id}</span>
-                    <span className="gtmini">{g.teams.map(t=>`${FLAGS[t]||""} ${t}`).join("\n")}</span>
+                    <span className="gtmini">{g.teams.map(t=><span key={t} style={{display:"block",color:hl(t)?"#E8A020":undefined,fontWeight:hl(t)?700:undefined}}>{FLAGS[t]||""} {t}</span>)}</span>
                   </button>
                 ))}
               </div>
@@ -308,7 +312,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                   <tbody>
                     {standings.map((s,i)=>(
                       <tr key={s.team} className={i<2?"q":""}>
-                        <td><span className={`rnk ${i<2?"top":""}`}>{i+1}</span>{FLAGS[s.team]} {s.team}</td>
+                        <td><span className={`rnk ${i<2?"top":""}`}>{i+1}</span><span className={hl(s.team)?"hl-team":""}>{FLAGS[s.team]} {s.team}</span></td>
                         <td>{s.p}</td><td>{s.w}</td><td>{s.d}</td><td>{s.l}</td>
                         <td>{s.gf}</td><td>{s.ga}</td>
                         <td>{s.gd>0?`+${s.gd}`:s.gd}</td>
@@ -328,12 +332,12 @@ export default function WorldCup2026({ initialScores }: Props) {
                     return (
                       <div key={i} className="mrow">
                         <div className="mrow-main">
-                          <div className="mteam">{FLAGS[m.home]} {m.home}</div>
+                          <div className={`mteam${hl(m.home)?" hl-team":""}`}>{FLAGS[m.home]} {m.home}</div>
                           <div className={`msc ${m.homeScore===null?"pend":""}`}
                             onClick={()=>{ setEditM({g:sel,i}); setSc({h:m.homeScore?.toString()??"",a:m.awayScore?.toString()??""});}}>
                             {m.homeScore!==null?`${m.homeScore} – ${m.awayScore}`:"vs"}
                           </div>
-                          <div className="mteam away">{m.away} {FLAGS[m.away]}</div>
+                          <div className={`mteam away${hl(m.away)?" hl-team":""}`}>{m.away} {FLAGS[m.away]}</div>
                         </div>
                         {lc && <div className="mrow-meta">
                           <span className="mtime">{lc.dateStr} · {lc.timeStr} {tzAbbr}</span>
@@ -370,9 +374,9 @@ export default function WorldCup2026({ initialScores }: Props) {
                       <div className="srow-body">
                         <div className="srow-teams">
                           {m.away ? <>
-                            <span>{FLAGS[m.home]||""} {m.home}</span>
+                            <span className={hl(m.home)?"hl-team":""}>{FLAGS[m.home]||""} {m.home}</span>
                             <span className="srow-vs">vs</span>
-                            <span>{m.away} {FLAGS[m.away]||""}</span>
+                            <span className={hl(m.away as string)?"hl-team":""}>{m.away} {FLAGS[m.away as string]||""}</span>
                           </> : <span style={{color:"#5A6E8A"}}>{m.home}</span>}
                         </div>
                         <div className="srow-meta">
