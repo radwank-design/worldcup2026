@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "FIFA World Cup 2026",
+  title: "World Cup 2026",
   description: "USA · Canada · Mexico · Jun 11 – Jul 19, 2026",
 };
 
