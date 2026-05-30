@@ -399,7 +399,7 @@ export default function WorldCup2026({ initialScores }: Props) {
               </div>
             ))}
             <div style={{marginTop:12,padding:"12px 14px",background:"rgba(200,16,46,.05)",border:"1px solid rgba(200,16,46,.2)",borderRadius:8,fontSize:12,color:"#5A6E8A",lineHeight:1.8}}>
-              <strong style={{color:"#C8102E"}}>Historic first:</strong> three nations jointly hosting a FIFA World Cup. USA hosts 78 of 104 matches · Mexico and Canada host 13 each.
+              <strong style={{color:"#C8102E"}}>Historic first:</strong> three nations jointly hosting a World Cup. USA hosts 78 of 104 matches · Mexico and Canada host 13 each.
             </div>
           </>}
         </div>
