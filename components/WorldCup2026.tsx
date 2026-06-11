@@ -133,22 +133,25 @@ const CSS = `
 
 interface Props { initialScores: ScoreMap }
 
+// Build the full match grid and overlay any persisted scores from a ScoreMap.
+function buildResults(scores: ScoreMap): ResultsMap {
+  const r: ResultsMap = {};
+  GROUPS.forEach(g => { r[g.id] = getGroupMatches(g.teams); });
+  Object.entries(scores).forEach(([key, sc]) => {
+    const [gid, home, away] = key.split("|");
+    if (r[gid]) {
+      r[gid] = r[gid].map(m =>
+        m.home === home && m.away === away ? { ...m, homeScore: sc.homeScore, awayScore: sc.awayScore } : m
+      );
+    }
+  });
+  return r;
+}
+
 export default function WorldCup2026({ initialScores }: Props) {
   const [tab, setTab] = useState("overview");
   const [sel, setSel] = useState("A");
-  const [results, setResults] = useState<ResultsMap>(() => {
-    const r: ResultsMap = {};
-    GROUPS.forEach(g => { r[g.id] = getGroupMatches(g.teams); });
-    Object.entries(initialScores).forEach(([key, sc]) => {
-      const [gid, home, away] = key.split("|");
-      if (r[gid]) {
-        r[gid] = r[gid].map(m =>
-          m.home === home && m.away === away ? { ...m, homeScore: sc.homeScore, awayScore: sc.awayScore } : m
-        );
-      }
-    });
-    return r;
-  });
+  const [results, setResults] = useState<ResultsMap>(() => buildResults(initialScores));
   const [editM, setEditM] = useState<{g:string,i:number}|null>(null);
   const [sc, setSc] = useState({h:"",a:""});
   const [cd, setCd] = useState({d:0,h:0,m:0,s:0});
@@ -163,6 +166,15 @@ export default function WorldCup2026({ initialScores }: Props) {
       setCd({ d:Math.floor(diff/86400000), h:Math.floor((diff%86400000)/3600000), m:Math.floor((diff%3600000)/60000), s:Math.floor((diff%60000)/1000) });
     };
     tick(); const t = setInterval(tick,1000); return ()=>clearInterval(t);
+  }, []);
+
+  // The page HTML is served via ISR (cached up to 180s), so initialScores can be
+  // stale on load. Pull the live scores from KV on mount so saved edits always show.
+  useEffect(() => {
+    fetch("/api/scores", { cache: "no-store" })
+      .then(r => r.ok ? r.json() : null)
+      .then((live: ScoreMap | null) => { if (live) setResults(buildResults(live)); })
+      .catch(() => {});
   }, []);
 
   async function saveScore() {
