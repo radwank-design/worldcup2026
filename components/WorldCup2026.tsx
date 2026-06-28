@@ -138,6 +138,7 @@ function buildResults(scores: ScoreMap): ResultsMap {
   const r: ResultsMap = {};
   GROUPS.forEach(g => { r[g.id] = getGroupMatches(g.teams); });
   Object.entries(scores).forEach(([key, sc]) => {
+    if (key.startsWith("KO|")) return;
     const [gid, home, away] = key.split("|");
     if (r[gid]) {
       r[gid] = r[gid].map(m =>
@@ -148,11 +149,27 @@ function buildResults(scores: ScoreMap): ResultsMap {
   return r;
 }
 
+export type KoScores = Record<number, { homeScore: number | null; awayScore: number | null }>;
+
+// Extract knockout scores (keyed "KO|<mn>|<home>|<away>") into a map keyed by match number.
+function buildKoScores(scores: ScoreMap): KoScores {
+  const k: KoScores = {};
+  Object.entries(scores).forEach(([key, sc]) => {
+    if (!key.startsWith("KO|")) return;
+    const mn = parseInt(key.split("|")[1]);
+    if (!isNaN(mn)) k[mn] = { homeScore: sc.homeScore, awayScore: sc.awayScore };
+  });
+  return k;
+}
+
+type EditTarget = { kind: "group"; g: string; i: number } | { kind: "ko"; mn: number };
+
 export default function WorldCup2026({ initialScores }: Props) {
   const [tab, setTab] = useState("overview");
   const [sel, setSel] = useState("A");
   const [results, setResults] = useState<ResultsMap>(() => buildResults(initialScores));
-  const [editM, setEditM] = useState<{g:string,i:number}|null>(null);
+  const [koScores, setKoScores] = useState<KoScores>(() => buildKoScores(initialScores));
+  const [editM, setEditM] = useState<EditTarget|null>(null);
   const [sc, setSc] = useState({h:"",a:""});
   const [cd, setCd] = useState({d:0,h:0,m:0,s:0});
   const [schedStage, setSchedStage] = useState("Group Stage");
@@ -173,49 +190,59 @@ export default function WorldCup2026({ initialScores }: Props) {
   useEffect(() => {
     fetch("/api/scores", { cache: "no-store" })
       .then(r => r.ok ? r.json() : null)
-      .then((live: ScoreMap | null) => { if (live) setResults(buildResults(live)); })
+      .then((live: ScoreMap | null) => { if (live) { setResults(buildResults(live)); setKoScores(buildKoScores(live)); } })
       .catch(() => {});
   }, []);
 
-  async function saveScore() {
-    const hv = parseInt(sc.h), av = parseInt(sc.a);
-    if (!editM || isNaN(hv) || isNaN(av) || hv < 0 || av < 0) return;
-    const em = results[editM.g][editM.i];
-    const key = `${editM.g}|${em.home}|${em.away}`;
-    setResults(p => {
-      const n = {...p};
-      n[editM.g] = n[editM.g].map((m,i) => i===editM.i ? {...m,homeScore:hv,awayScore:av} : m);
-      return n;
-    });
-    setEditM(null);
-    await fetch("/api/scores", {
+  function persistScore(key: string, homeScore: number | null, awayScore: number | null) {
+    fetch("/api/scores", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [key]: { homeScore: hv, awayScore: av } }),
+      body: JSON.stringify({ [key]: { homeScore, awayScore } }),
     }).catch(() => {});
+  }
+
+  function writeScore(t: EditTarget, homeScore: number | null, awayScore: number | null) {
+    if (t.kind === "group") {
+      const m = results[t.g][t.i];
+      setResults(p => {
+        const n = {...p};
+        n[t.g] = n[t.g].map((mm,i) => i===t.i ? {...mm,homeScore,awayScore} : mm);
+        return n;
+      });
+      persistScore(`${t.g}|${m.home}|${m.away}`, homeScore, awayScore);
+    } else {
+      const km = KNOCKOUT_MATCHES.find(m => m.mn === t.mn)!;
+      setKoScores(p => ({ ...p, [t.mn]: { homeScore, awayScore } }));
+      persistScore(`KO|${t.mn}|${km.home}|${km.away}`, homeScore, awayScore);
+    }
+    setEditM(null);
+  }
+
+  function saveScore() {
+    const hv = parseInt(sc.h), av = parseInt(sc.a);
+    if (!editM || isNaN(hv) || isNaN(av) || hv < 0 || av < 0) return;
+    writeScore(editM, hv, av);
   }
 
   function clearScore() {
     if (!editM) return;
-    const em = results[editM.g][editM.i];
-    const key = `${editM.g}|${em.home}|${em.away}`;
-    setResults(p => {
-      const n = {...p};
-      n[editM.g] = n[editM.g].map((m,i) => i===editM.i ? {...m,homeScore:null,awayScore:null} : m);
-      return n;
-    });
-    setEditM(null);
-    fetch("/api/scores", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ [key]: { homeScore: null, awayScore: null } }),
-    }).catch(() => {});
+    writeScore(editM, null, null);
   }
 
   const curGroup = GROUPS.find(g => g.id === sel)!;
   const curMatches = results[sel];
   const standings = calcStandings(curGroup.teams, curMatches);
-  const em = editM ? results[editM.g][editM.i] : null;
+  let em: { home: string; away: string; homeScore: number | null; awayScore: number | null } | null = null;
+  if (editM) {
+    if (editM.kind === "group") {
+      em = results[editM.g][editM.i];
+    } else {
+      const km = KNOCKOUT_MATCHES.find(m => m.mn === editM.mn)!;
+      const ks = koScores[editM.mn];
+      em = { home: km.home, away: km.away, homeScore: ks?.homeScore ?? null, awayScore: ks?.awayScore ?? null };
+    }
+  }
   const p2 = (v: number) => String(v).padStart(2,"0");
 
   const schedMatches = schedStage === "Group Stage"
@@ -346,7 +373,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                         <div className="mrow-main">
                           <div className={`mteam${hl(m.home)?" hl-team":""}`}>{FLAGS[m.home]} {m.home}</div>
                           <div className={`msc ${m.homeScore===null?"pend":""}`}
-                            onClick={()=>{ setEditM({g:sel,i}); setSc({h:m.homeScore?.toString()??"",a:m.awayScore?.toString()??""});}}>
+                            onClick={()=>{ setEditM({kind:"group",g:sel,i}); setSc({h:m.homeScore?.toString()??"",a:m.awayScore?.toString()??""});}}>
                             {m.homeScore!==null?`${m.homeScore} – ${m.awayScore}`:"vs"}
                           </div>
                           <div className={`mteam away${hl(m.away)?" hl-team":""}`}>{m.away} {FLAGS[m.away]}</div>
@@ -368,6 +395,7 @@ export default function WorldCup2026({ initialScores }: Props) {
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12,flexWrap:"wrap"}}>
               <span style={{fontSize:11,color:"#475569"}}>All times shown in your local timezone</span>
               <span className="tz-badge">📍 {tzAbbr}</span>
+              {schedStage!=="Group Stage" && <span style={{fontSize:11,color:"#8299B8"}}>· tap score to edit</span>}
             </div>
             <div className="stg-filt">
               {["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"].map(s=>(
@@ -379,7 +407,11 @@ export default function WorldCup2026({ initialScores }: Props) {
                 <div className="sday-hdr">{day}</div>
                 {matches.map((m,i)=>{
                   const {timeStr} = formatLocal(m.utc);
-                  const label = "mn" in m && m.mn ? `M${m.mn}` : "g" in m && m.g ? `Grp ${m.g}` : "";
+                  const isKo = "mn" in m && !!m.mn;
+                  const koMn = isKo ? (m as KnockoutMatch).mn : 0;
+                  const ks = isKo ? koScores[koMn] : undefined;
+                  const hasScore = !!ks && ks.homeScore!==null;
+                  const label = isKo ? `M${koMn}` : "g" in m && m.g ? `Grp ${m.g}` : "";
                   return (
                     <div key={i} className="srow">
                       <div className="srow-grp">{label}</div>
@@ -387,7 +419,12 @@ export default function WorldCup2026({ initialScores }: Props) {
                         <div className="srow-teams">
                           {m.away ? <>
                             <span className={hl(m.home)?"hl-team":""}>{FLAGS[m.home]||""} {m.home}</span>
-                            <span className="srow-vs">vs</span>
+                            {isKo
+                              ? <span className={`msc${hasScore?"":" pend"}`}
+                                  onClick={()=>{ setEditM({kind:"ko",mn:koMn}); setSc({h:ks?.homeScore?.toString()??"",a:ks?.awayScore?.toString()??""});}}>
+                                  {hasScore?`${ks!.homeScore} – ${ks!.awayScore}`:"vs"}
+                                </span>
+                              : <span className="srow-vs">vs</span>}
                             <span className={hl(m.away as string)?"hl-team":""}>{m.away} {FLAGS[m.away as string]||""}</span>
                           </> : <span style={{color:"#5A6E8A"}}>{m.home}</span>}
                         </div>
