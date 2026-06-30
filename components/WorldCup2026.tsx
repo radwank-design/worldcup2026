@@ -167,6 +167,7 @@ type EditTarget = { kind: "group"; g: string; i: number } | { kind: "ko"; mn: nu
 export default function WorldCup2026({ initialScores }: Props) {
   const [tab, setTab] = useState("overview");
   const [sel, setSel] = useState("A");
+  const [scoreStage, setScoreStage] = useState("Groups");
   const [results, setResults] = useState<ResultsMap>(() => buildResults(initialScores));
   const [koScores, setKoScores] = useState<KoScores>(() => buildKoScores(initialScores));
   const [editM, setEditM] = useState<EditTarget|null>(null);
@@ -332,7 +333,13 @@ export default function WorldCup2026({ initialScores }: Props) {
             </div>
           </>}
 
-          {tab==="groups" && (
+          {tab==="groups" && <>
+            <div className="stg-filt">
+              {["Groups","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"].map(s=>(
+                <button key={s} className={`sfbtn ${scoreStage===s?"on":""}`} onClick={()=>setScoreStage(s)}>{s}</button>
+              ))}
+            </div>
+            {scoreStage==="Groups" ? (
             <div className="gl">
               <div className="glist">
                 {GROUPS.map(g=>(
@@ -389,13 +396,45 @@ export default function WorldCup2026({ initialScores }: Props) {
                 <div className="note">Green rows = qualify for Round of 32</div>
               </div>
             </div>
-          )}
+            ) : (
+            <div>
+              <div className="mhd">
+                {scoreStage}
+                <span className="tz-badge">📍 {tzAbbr}</span>
+                <span style={{fontWeight:400,color:"#8299B8",letterSpacing:0,textTransform:"none",fontSize:11}}>tap score to edit</span>
+              </div>
+              <div className="mlist">
+                {KNOCKOUT_MATCHES.filter(m=>m.stage===scoreStage).map((m,i)=>{
+                  const lc = formatLocal(m.utc);
+                  const ks = koScores[m.mn];
+                  const has = !!ks && ks.homeScore!==null;
+                  return (
+                    <div key={i} className="mrow">
+                      <div className="mrow-main">
+                        <div className={`mteam${hl(m.home)?" hl-team":""}`}>{FLAGS[m.home]||""} {m.home}</div>
+                        <div className={`msc ${has?"":"pend"}`}
+                          onClick={()=>{ setEditM({kind:"ko",mn:m.mn}); setSc({h:ks?.homeScore?.toString()??"",a:ks?.awayScore?.toString()??""});}}>
+                          {has?`${ks!.homeScore} – ${ks!.awayScore}`:"vs"}
+                        </div>
+                        <div className={`mteam away${hl(m.away)?" hl-team":""}`}>{m.away} {FLAGS[m.away]||""}</div>
+                      </div>
+                      <div className="mrow-meta">
+                        <span className="mtime">{lc.dateStr} · {lc.timeStr} {tzAbbr}</span>
+                        <span>{m.venue}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="note">Later-round names show as placeholders until those matches are set.</div>
+            </div>
+            )}
+          </>}
 
           {tab==="schedule" && <>
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12,flexWrap:"wrap"}}>
               <span style={{fontSize:11,color:"#475569"}}>All times shown in your local timezone</span>
               <span className="tz-badge">📍 {tzAbbr}</span>
-              {schedStage!=="Group Stage" && <span style={{fontSize:11,color:"#8299B8"}}>· tap score to edit</span>}
             </div>
             <div className="stg-filt">
               {["Group Stage","Round of 32","Round of 16","Quarterfinals","Semifinals","3rd Place","Final"].map(s=>(
@@ -407,11 +446,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                 <div className="sday-hdr">{day}</div>
                 {matches.map((m,i)=>{
                   const {timeStr} = formatLocal(m.utc);
-                  const isKo = "mn" in m && !!m.mn;
-                  const koMn = isKo ? (m as KnockoutMatch).mn : 0;
-                  const ks = isKo ? koScores[koMn] : undefined;
-                  const hasScore = !!ks && ks.homeScore!==null;
-                  const label = isKo ? `M${koMn}` : "g" in m && m.g ? `Grp ${m.g}` : "";
+                  const label = "mn" in m && m.mn ? `M${m.mn}` : "g" in m && m.g ? `Grp ${m.g}` : "";
                   return (
                     <div key={i} className="srow">
                       <div className="srow-grp">{label}</div>
@@ -419,12 +454,7 @@ export default function WorldCup2026({ initialScores }: Props) {
                         <div className="srow-teams">
                           {m.away ? <>
                             <span className={hl(m.home)?"hl-team":""}>{FLAGS[m.home]||""} {m.home}</span>
-                            {isKo
-                              ? <span className={`msc${hasScore?"":" pend"}`}
-                                  onClick={()=>{ setEditM({kind:"ko",mn:koMn}); setSc({h:ks?.homeScore?.toString()??"",a:ks?.awayScore?.toString()??""});}}>
-                                  {hasScore?`${ks!.homeScore} – ${ks!.awayScore}`:"vs"}
-                                </span>
-                              : <span className="srow-vs">vs</span>}
+                            <span className="srow-vs">vs</span>
                             <span className={hl(m.away as string)?"hl-team":""}>{m.away} {FLAGS[m.away as string]||""}</span>
                           </> : <span style={{color:"#5A6E8A"}}>{m.home}</span>}
                         </div>
