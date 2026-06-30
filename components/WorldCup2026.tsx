@@ -408,15 +408,23 @@ export default function WorldCup2026({ initialScores }: Props) {
                   const lc = formatLocal(m.utc);
                   const ks = koScores[m.mn];
                   const has = !!ks && ks.homeScore!==null;
+                  const chip = (
+                    <div className={`msc ${has?"":"pend"}`}
+                      onClick={()=>{ setEditM({kind:"ko",mn:m.mn}); setSc({h:ks?.homeScore?.toString()??"",a:ks?.awayScore?.toString()??""});}}>
+                      {has?`${ks!.homeScore} – ${ks!.awayScore}`:"vs"}
+                    </div>
+                  );
                   return (
                     <div key={i} className="mrow">
                       <div className="mrow-main">
-                        <div className={`mteam${hl(m.home)?" hl-team":""}`}>{FLAGS[m.home]||""} {m.home}</div>
-                        <div className={`msc ${has?"":"pend"}`}
-                          onClick={()=>{ setEditM({kind:"ko",mn:m.mn}); setSc({h:ks?.homeScore?.toString()??"",a:ks?.awayScore?.toString()??""});}}>
-                          {has?`${ks!.homeScore} – ${ks!.awayScore}`:"vs"}
-                        </div>
-                        <div className={`mteam away${hl(m.away)?" hl-team":""}`}>{m.away} {FLAGS[m.away]||""}</div>
+                        {m.away ? <>
+                          <div className={`mteam${hl(m.home)?" hl-team":""}`}>{FLAGS[m.home]||""} {m.home}</div>
+                          {chip}
+                          <div className={`mteam away${hl(m.away)?" hl-team":""}`}>{m.away} {FLAGS[m.away]||""}</div>
+                        </> : <>
+                          <div className="mteam" style={{color:"#5A6E8A"}}>{m.home}</div>
+                          {chip}
+                        </>}
                       </div>
                       <div className="mrow-meta">
                         <span className="mtime">{lc.dateStr} · {lc.timeStr} {tzAbbr}</span>
