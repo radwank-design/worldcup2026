@@ -166,8 +166,8 @@ const KO_RAW = [
   {stage:"Quarterfinals",mn:98,home:"Spain",away:"Belgium",date:"2026-07-10",et:"15:00",venue:"SoFi Stadium, Los Angeles"},
   {stage:"Quarterfinals",mn:99,home:"Norway",away:"England",date:"2026-07-11",et:"17:00",venue:"Hard Rock Stadium, Miami"},
   {stage:"Quarterfinals",mn:100,home:"Argentina",away:"Switzerland",date:"2026-07-11",et:"21:00",venue:"Arrowhead Stadium, Kansas City"},
-  {stage:"Semifinals",mn:101,home:"W97 vs W98",away:"",date:"2026-07-14",et:"15:00",venue:"AT&T Stadium, Dallas"},
-  {stage:"Semifinals",mn:102,home:"W99 vs W100",away:"",date:"2026-07-15",et:"15:00",venue:"Mercedes-Benz Stadium, Atlanta"},
+  {stage:"Semifinals",mn:101,home:"France",away:"Spain",date:"2026-07-14",et:"15:00",venue:"AT&T Stadium, Dallas"},
+  {stage:"Semifinals",mn:102,home:"England",away:"Argentina",date:"2026-07-15",et:"15:00",venue:"Mercedes-Benz Stadium, Atlanta"},
   {stage:"3rd Place",mn:103,home:"Loser M101",away:"Loser M102",date:"2026-07-18",et:"17:00",venue:"Hard Rock Stadium, Miami"},
   {stage:"Final",mn:104,home:"Winner M101",away:"Winner M102",date:"2026-07-19",et:"15:00",venue:"MetLife Stadium, New York/NJ"},
 ];
